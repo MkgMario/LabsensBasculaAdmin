@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Técnica · Báscula Instrumentada · LABSENS PUCV</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #dddbd3;
+    --accent: #1a3a6b;
+    --accent2: #c8380a;
+    --accent3: #2a7a2a;
+    --text: #1a1a1a;
+    --text-dim: #555550;
+    --text-muted: #888880;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--accent);
+    color: white;
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: 'TÉCNICO';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: var(--mono);
+    font-size: 80px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    letter-spacing: 8px;
+    pointer-events: none;
+  }
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .header-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: rgba(255,255,255,0.4);
+  }
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+  h1 em {
+    font-style: normal;
+    color: #7eb8f7;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    font-weight: 300;
+    margin-top: 0.5rem;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--accent);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 1.25rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .toc a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .toc a:hover { color: #7eb8f7; }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* SECTION */
+  section {
+    margin-bottom: 4rem;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  p {
+    color: var(--text-dim);
+    margin-bottom: 0.9rem;
+    font-size: 14px;
+  }
+
+  /* COMPONENTE CARD */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .comp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem;
+    position: relative;
+  }
+  .comp-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px 0 0 4px;
+  }
+  .comp-card.warn::before { background: var(--accent2); }
+  .comp-card.ok::before { background: var(--accent3); }
+
+  .comp-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.5px;
+  }
+  .comp-card.warn .comp-name { color: var(--accent2); }
+  .comp-card.ok .comp-name { color: var(--accent3); }
+
+  .comp-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .comp-detail {
+    margin-top: 0.6rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* TABLA */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 1rem 0 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .data-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: white;
+    background: var(--accent);
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    font-weight: 500;
+  }
+  .data-table td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--surface2); }
+  .data-table td:first-child {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #1a1a1a;
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #d4d0c8;
+    overflow-x: auto;
+    margin: 1rem 0;
+    line-height: 1.9;
+    border-left: 3px solid var(--accent);
+  }
+  .code-block .comment { color: #666; font-style: italic; }
+  .code-block .kw { color: #7eb8f7; }
+  .code-block .str { color: #98d982; }
+  .code-block .num { color: #f4b860; }
+  .code-block .def { color: #f4b860; font-weight: 500; }
+
+  /* ALERT */
+  .alert {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-size: 13px;
+  }
+  .alert-warn {
+    background: #fff8f0;
+    border: 1px solid #f4b860;
+    border-left: 3px solid var(--accent2);
+    color: #7a4a00;
+  }
+  .alert-info {
+    background: #f0f5ff;
+    border: 1px solid #aac4f0;
+    border-left: 3px solid var(--accent);
+    color: #1a3a6b;
+  }
+  .alert-ok {
+    background: #f0fff4;
+    border: 1px solid #86efac;
+    border-left: 3px solid var(--accent3);
+    color: #1a4a1a;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* PARAM ROW */
+  .param-list { display: flex; flex-direction: column; gap: 0.75rem; margin: 1rem 0; }
+  .param-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.9rem 1.1rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0.5rem 1rem;
+    align-items: start;
+  }
+  @media (max-width: 600px) { .param-item { grid-template-columns: 1fr; } }
+  .param-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+  .param-desc { font-size: 13px; color: var(--text-dim); }
+  .param-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--accent);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.5rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  /* INLINE CODE */
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent2);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">LABSENS · PUCV · Escuela de Ingeniería Eléctrica</div>
+  <h1>Báscula Instrumentada<br><em>Guía Técnica para Docente</em></h1>
+  <p class="header-sub">Firmware v3.1 · INA131 + ADS1115 + HX711 · XIAO ESP32-C6 · 2026</p>
+</header>
+
+<nav class="toc">
+  <a href="#componentes">01 · Componentes</a>
+  <a href="#conexiones">02 · Conexiones</a>
+  <a href="#firmware">03 · Firmware</a>
+  <a href="#parametros">04 · Parámetros ajustables</a>
+  <a href="#cambios">05 · Qué se puede cambiar</a>
+  <a href="#uso">06 · Uso con RealTerm</a>
+  <a href="#limitaciones">07 · Limitaciones</a>
+</nav>
+
+<main>
+
+  <!-- 01 COMPONENTES -->
+  <section id="componentes">
+    <div class="section-num">01</div>
+    <h2>Componentes del sistema</h2>
+
+    <p>La báscula usa <strong>dos cadenas de adquisición paralelas e independientes</strong> que corren simultáneamente: una basada en el ADS1115 (alta velocidad, 860 SPS) y otra en el HX711 (alta resolución, hasta 80 SPS). Ambas señales se envían juntas por serial al PC.</p>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-name">Celda de carga tipo punto simple</div>
+        <div class="comp-desc">Sensor mecánico principal. Convierte la fuerza aplicada en una señal de voltaje diferencial del orden de milivolts mediante galgas extensiométricas en puente de Wheatstone.</div>
+        <div class="comp-detail">Capacidad recomendada: 5–10 kg · Salida: ~1–2 mV/V</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">INA131 — Amplificador de Instrumentación</div>
+        <div class="comp-desc">Amplifica la señal diferencial de la celda antes de enviarla al ADS1115. Ofrece alta precisión, bajo ruido y excelente rechazo de modo común (CMRR). La ganancia se configura con una resistencia externa RG.</div>
+        <div class="comp-detail">Ganancia actual: G = 100 + 250kΩ/RG · Con RG=4.7kΩ → G≈153</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">ADS1115 — Conversor ADC</div>
+        <div class="comp-desc">Convierte la señal amplificada del INA131 a formato digital de 16 bits. Opera en modo diferencial AIN0–AIN1 a 860 SPS en modo continuo. Protocolo I2C.</div>
+        <div class="comp-detail">Resolución: 16 bits · FSR: ±1.024V · LSB: 0.03125 mV</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">HX711 — ADC especializado para celdas</div>
+        <div class="comp-desc">Segundo canal de adquisición. Integra amplificador y ADC de 24 bits diseñado específicamente para celdas de carga. Más lento pero de mayor resolución que el ADS1115.</div>
+        <div class="comp-detail">Resolución: 24 bits · Velocidad: hasta 80 SPS · Ganancia: 128</div>
+      </div>
+      <div class="comp-card ok">
+        <div class="comp-name">XIAO ESP32-C6 — Microcontrolador</div>
+        <div class="comp-desc">Cerebro del sistema. Gestiona ambas cadenas de adquisición en paralelo usando FreeRTOS (sistema operativo de tiempo real). Envía los datos al PC por USB/UART a 115200 baud en formato CSV.</div>
+        <div class="comp-detail">Dual-core · FreeRTOS · WiFi+BT · USB-C</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 02 CONEXIONES -->
+  <section id="conexiones">
+    <div class="section-num">02</div>
+    <h2>Conexiones del sistema</h2>
+
+    <h3>Celda de carga → INA131</h3>
+    <table class="data-table">
+      <thead><tr><th>Cable celda</th><th>Pin INA131</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>Rojo (EX+)</td><td>VCC (5V)</td><td>Excitación positiva del puente</td></tr>
+        <tr><td>Negro (EX−)</td><td>GND</td><td>Excitación negativa del puente</td></tr>
+        <tr><td>Verde (SG+)</td><td>Pin 3 (V⁺_IN)</td><td>Señal diferencial positiva</td></tr>
+        <tr><td>Blanco (SG−)</td><td>Pin 2 (V⁻_IN)</td><td>Señal diferencial negativa</td></tr>
+        <tr><td>Amarillo</td><td>GND</td><td>Blindaje — conectar a tierra</td></tr>
+      </tbody>
+    </table>
+
+    <h3>INA131 → ADS1115</h3>
+    <table class="data-table">
+      <thead><tr><th>Pin INA131</th><th>Conectar a</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>Pin 1 y 8 (RG)</td><td>Resistencia 4.7kΩ entre ambos</td><td>Define la ganancia ≈153</td></tr>
+        <tr><td>Pin 4 (V−)</td><td>GND</td><td>Alimentación negativa</td></tr>
+        <tr><td>Pin 5 (REF)</td><td>Divisor resistivo 2.5V</td><td>Referencia de salida centrada</td></tr>
+        <tr><td>Pin 6 (Vout)</td><td>AIN0 del ADS1115</td><td>Señal amplificada</td></tr>
+        <tr><td>Pin 7 (V+)</td><td>5V</td><td>Alimentación positiva</td></tr>
+      </tbody>
+    </table>
+
+    <h3>ADS1115 → XIAO ESP32-C6</h3>
+    <table class="data-table">
+      <thead><tr><th>Pin ADS1115</th><th>Pin XIAO ESP32-C6</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>VDD</td><td>3.3V</td><td>Alimentación</td></tr>
+        <tr><td>GND</td><td>GND</td><td>Tierra común</td></tr>
+        <tr><td>SCL</td><td>D4</td><td>Reloj I2C</td></tr>
+        <tr><td>SDA</td><td>D5</td><td>Datos I2C</td></tr>
+        <tr><td>ADDR</td><td>GND (0x48) o VDD (0x49)</td><td>Dirección I2C — ver nota</td></tr>
+        <tr><td>AIN0</td><td>Salida INA131 (Vout)</td><td>Señal amplificada entrada</td></tr>
+        <tr><td>AIN1</td><td>Referencia 2.5V</td><td>Referencia diferencial</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">ℹ</span>
+      <span>El sistema usa <strong>dos ADS1115 simultáneos</strong> en el mismo bus I2C. Para distinguirlos se usan direcciones diferentes: el ADS trasero en <code>0x48</code> (ADDR a GND) y el delantero en <code>0x49</code> (ADDR a VDD). Si solo hay una celda, se usa solo el <code>0x48</code>.</span>
+    </div>
+
+    <h3>HX711 → XIAO ESP32-C6</h3>
+    <table class="data-table">
+      <thead><tr><th>Pin HX711</th><th>Pin XIAO ESP32-C6</th></tr></thead>
+      <tbody>
+        <tr><td>VCC</td><td>3.3V</td></tr>
+        <tr><td>GND</td><td>GND</td></tr>
+        <tr><td>DAT (HX1)</td><td>D1</td></tr>
+        <tr><td>CLK (HX1)</td><td>D0</td></tr>
+        <tr><td>DAT (HX2)</td><td>D2</td></tr>
+        <tr><td>CLK (HX2)</td><td>D3</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 03 FIRMWARE -->
+  <section id="firmware">
+    <div class="section-num">03</div>
+    <h2>Cómo funciona el firmware</h2>
+
+    <p>El firmware usa <strong>FreeRTOS</strong> — un sistema operativo de tiempo real — para correr dos tareas en paralelo de forma independiente. Esto es lo que le permite leer el ADS1115 y el HX711 al mismo tiempo sin que uno interfiera con el otro.</p>
+
+    <h3>Tarea 1 — taskADS (alta prioridad, 800 Hz)</h3>
+    <p>Lee los dos ADS1115 cada 1.25ms, disparada por un timer de hardware. Al arrancar hace una tara automática promediando 300 muestras. Emite una línea CSV por serial con cada muestra.</p>
+
+    <h3>Tarea 2 — taskHX711 (baja prioridad, hasta 80 Hz)</h3>
+    <p>Lee los dos HX711 cuando están listos. También hace tara automática al inicio. Su lectura se incluye en la línea CSV junto con los datos del ADS.</p>
+
+    <h3>Formato de salida por serial</h3>
+    <div class="code-block">
+<span class="comment">// Encabezado enviado al conectar:</span>
+t_ms,ads_rear,ads_front,hx1,hx2,sps_ads
+
+<span class="comment">// Ejemplo de línea de datos:</span>
+<span class="num">12450</span>,<span class="num">-243</span>,<span class="num">-251</span>,<span class="num">8421937</span>,<span class="num">8389201</span>,<span class="num">798</span>
+
+<span class="comment">// Columnas:</span>
+<span class="comment">// t_ms      → tiempo en milisegundos desde encendido</span>
+<span class="comment">// ads_rear  → lectura ADS1115 trasero (cuentas ADC 16 bits, con tara)</span>
+<span class="comment">// ads_front → lectura ADS1115 delantero (cuentas ADC 16 bits, con tara)</span>
+<span class="comment">// hx1       → lectura HX711 canal 1 (cuentas crudas 24 bits)</span>
+<span class="comment">// hx2       → lectura HX711 canal 2 (cuentas crudas 24 bits)</span>
+<span class="comment">// sps_ads   → muestras por segundo reales del ADS (verificación)</span>
+    </div>
+
+    <div class="alert alert-warn">
+      <span class="alert-icon">⚠</span>
+      <span>Las columnas <code>hx1</code> y <code>hx2</code> actualmente envían el valor <strong>sin tara</strong> (valor crudo). En el código hay una línea comentada que activa la tara para el HX711. Ver sección de parámetros ajustables.</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 04 PARÁMETROS -->
+  <section id="parametros">
+    <div class="section-num">04</div>
+    <h2>Parámetros ajustables en el código</h2>
+
+    <p>Todos estos parámetros están al inicio del archivo <code>.ino</code> o en <code>ads_configs.h</code> y pueden modificarse sin cambiar la lógica del programa.</p>
+
+    <div class="param-list">
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">NUM_CALIB_SAMPLES</div>
+          <div class="param-val">Valor actual: 300</div>
+        </div>
+        <div class="param-desc">Número de muestras usadas para la tara automática al encender. Más muestras = tara más precisa pero arranque más lento. Con 300 muestras el arranque tarda ~2-3 segundos.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">TIMER_HZ</div>
+          <div class="param-val">Valor actual: 800</div>
+        </div>
+        <div class="param-desc">Frecuencia del timer de hardware que dispara la lectura del ADS1115. Se puede bajar a 400 o 200 Hz si se quiere menor volumen de datos por serial. No subir sobre 860 Hz (límite del ADS1115).</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">ADS_CONFIG_DR_860SPS</div>
+          <div class="param-val">En ads_configs.h · 0x00E0</div>
+        </div>
+        <div class="param-desc">Tasa de muestras del ADS1115. Opciones disponibles: 8, 16, 32, 64, 128, 250, 475 o 860 SPS. Cambiar este valor cambia la velocidad de conversión interna del ADS. Para báscula estática 128 SPS es más que suficiente.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">ADS_CONFIG_PGA_0_1024</div>
+          <div class="param-val">En ads_configs.h · ±1.024V</div>
+        </div>
+        <div class="param-desc">Rango de entrada del ADS1115. Si la señal del INA131 es mayor a ±1.024V se saturará — en ese caso cambiar a ±2.048V (0x0400). Si es muy pequeña, bajar a ±0.512V mejora la resolución.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">RG del INA131</div>
+          <div class="param-val">Valor actual: 4.7kΩ → G≈153</div>
+        </div>
+        <div class="param-desc">Resistencia entre pines 1 y 8 del INA131 que define la ganancia: G = 100 + 250kΩ/RG. Para cambiar la ganancia se reemplaza esta resistencia físicamente. Menor RG = mayor ganancia. Con RG=2.5kΩ la ganancia sube a ~200.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">Tara HX711 — activar/desactivar</div>
+          <div class="param-val">Línea 169 del .ino</div>
+        </div>
+        <div class="param-desc">Actualmente el HX711 envía el valor <strong>crudo sin tara</strong>. Para activar la tara, en la línea 169 cambiar <code>hx1_local</code> por <code>hx1_local - hx1_offset</code> y lo mismo para hx2 en la línea 171.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name">Baud rate serial</div>
+          <div class="param-val">Valor actual: 115200</div>
+        </div>
+        <div class="param-desc">Velocidad de comunicación con el PC. Con 800 Hz y 5 columnas de datos el volumen es ~40 kbit/s, por lo que 115200 baud es suficiente. Si se sube la frecuencia de muestreo puede ser necesario subir también el baud rate.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 05 QUÉ SE PUEDE CAMBIAR -->
+  <section id="cambios">
+    <div class="section-num">05</div>
+    <h2>¿Qué se puede cambiar y cómo afecta?</h2>
+
+    <h3>Cambiar el INA131 por otro amplificador</h3>
+    <div class="comp-grid">
+      <div class="comp-card ok">
+        <div class="comp-name">✓ INA128 o INA129</div>
+        <div class="comp-desc">Compatibles pin a pin con el INA131. Misma fórmula de ganancia. Reemplazo directo sin cambios en el código.</div>
+      </div>
+      <div class="comp-card warn">
+        <div class="comp-name">⚠ HX711 como único amplificador</div>
+        <div class="comp-desc">Si se elimina el INA131 y el ADS1115 y se usa solo el HX711, el código completo debe reescribirse. La arquitectura FreeRTOS ya no aplicaría.</div>
+      </div>
+      <div class="comp-card warn">
+        <div class="comp-name">⚠ AD620 u otros INA</div>
+        <div class="comp-desc">Funcionan, pero la fórmula de ganancia cambia. Requiere recalcular RG y ajustar el rango PGA del ADS1115 según la nueva ganancia.</div>
+      </div>
+    </div>
+
+    <h3>Cambiar el ADS1115 por otro ADC</h3>
+    <p>Si se reemplaza por otro ADC I2C (como el ADS1015 de 12 bits), hay que reescribir las funciones <code>adsWriteConfig()</code> y <code>adsReadConv()</code> y ajustar el registro de configuración. El ADS1015 solo llega a 3300 SPS pero con menor resolución.</p>
+
+    <h3>Cambiar el XIAO ESP32-C6 por otro microcontrolador</h3>
+    <div class="alert alert-warn">
+      <span class="alert-icon">⚠</span>
+      <span>El firmware usa <strong>FreeRTOS y temporizadores de hardware ESP32</strong>. Si se cambia a Arduino Uno o similar, el código completo debe reescribirse desde cero — no es compatible. Un ESP32 estándar de 38 pines sí es compatible con mínimos cambios en los pines.</span>
+    </div>
+
+    <h3>Cambiar el cable de la celda de carga</h3>
+    <table class="data-table">
+      <thead><tr><th>Cable</th><th>Si se intercambia con...</th><th>Efecto</th></tr></thead>
+      <tbody>
+        <tr><td>Verde (SG+) ↔ Blanco (SG−)</td><td>Entre sí</td><td>La señal se invierte — valores positivos se vuelven negativos y viceversa. Solución: invertir en software multiplicando por -1.</td></tr>
+        <tr><td>Rojo (EX+) ↔ Negro (EX−)</td><td>Entre sí</td><td>La excitación se invierte — la celda funciona al revés. Mismo efecto que invertir SG.</td></tr>
+        <tr><td>Amarillo ↔ cualquier señal</td><td>Señal o GND</td><td>El blindaje captura interferencias y las inyecta en la señal — ruido muy alto. Siempre debe ir a GND.</td></tr>
+        <tr><td>Celda por cable más largo</td><td>—</td><td>Mayor largo = mayor resistencia de cable = ligera pérdida de sensibilidad. Con cables bajo 5m el efecto es despreciable.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Usar una sola celda en vez de dos</h3>
+    <p>El código está diseñado para dos celdas (trasera y delantera). Si solo se usa una celda, simplemente se ignora la columna <code>ads_front</code> en los datos recibidos. No es necesario cambiar el firmware — la segunda dirección I2C simplemente devolverá cero o valores de ruido si no hay ADS conectado en <code>0x49</code>.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 06 USO CON REALTERM -->
+  <section id="uso">
+    <div class="section-num">06</div>
+    <h2>Uso con RealTerm</h2>
+
+    <p>Al conectar el XIAO ESP32-C6 por USB al PC, el sistema inicia automáticamente y comienza a enviar datos. No requiere reprogramación.</p>
+
+    <h3>Configuración RealTerm</h3>
+    <table class="data-table">
+      <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Baud rate</td><td>115200</td></tr>
+        <tr><td>Data bits</td><td>8</td></tr>
+        <tr><td>Parity</td><td>None</td></tr>
+        <tr><td>Stop bits</td><td>1</td></tr>
+        <tr><td>Flow control</td><td>None</td></tr>
+        <tr><td>Puerto</td><td>El COM que aparezca en Administrador de dispositivos</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Capturar datos a CSV</h3>
+    <p>En RealTerm, pestaña <strong>Capture</strong> → clic en <strong>Start</strong> → al terminar clic en <strong>Stop</strong>. El archivo <code>.txt</code> generado puede abrirse directamente en Excel usando <em>Datos → Desde texto/CSV</em>.</p>
+
+    <div class="alert alert-ok">
+      <span class="alert-icon">✓</span>
+      <span>La tara se realiza automáticamente al encender. Si se necesita retarar sin apagar el dispositivo, se debe reiniciar el XIAO (botón RESET en la placa) o desconectar y reconectar el USB.</span>
+    </div>
+
+    <h3>Convertir cuentas ADC a gramos</h3>
+    <p>Los valores que llegan por serial son cuentas ADC — no están en gramos. Para convertir:</p>
+    <div class="code-block">
+<span class="comment">// Para el ADS1115 (canal ads_rear o ads_front):</span>
+voltaje_mV = cuentas_ADC × <span class="num">0.03125</span>  <span class="comment">// LSB = 0.03125 mV con PGA ±1.024V</span>
+fuerza_g   = voltaje_mV / (sensibilidad_celda × ganancia_INA131)
+
+<span class="comment">// Ejemplo con celda de 2mV/V a 5V excitación y ganancia 153:</span>
+<span class="comment">// Sensibilidad = 2mV/V × 5V = 10mV a plena escala</span>
+<span class="comment">// Con ganancia 153: señal máxima amplificada = 10mV × 153 = 1530 mV</span>
+<span class="comment">// Esto excede el rango del ADS (±1024 mV) — ajustar PGA o ganancia</span>
+
+<span class="comment">// Para el HX711 — calibración empírica:</span>
+factor = cuentas_con_peso_conocido / gramos_conocidos
+fuerza_g = cuentas_HX / factor
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 07 LIMITACIONES -->
+  <section id="limitaciones">
+    <div class="section-num">07</div>
+    <h2>Limitaciones conocidas del sistema</h2>
+
+    <div class="param-list">
+
+      <div class="param-item">
+        <div>
+          <div class="param-name" style="color:var(--accent2);">Sin interfaz gráfica integrada</div>
+        </div>
+        <div class="param-desc">Los datos llegan en texto CSV crudo. Para visualizarlos en tiempo real se necesita RealTerm u otro software externo. La interfaz Python del proyecto original de partidor de natación puede adaptarse para esta báscula.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name" style="color:var(--accent2);">Tara solo al encender</div>
+        </div>
+        <div class="param-desc">El sistema tara automáticamente al arrancar. No hay comando de retara en tiempo real sin reiniciar el dispositivo. Esto se puede agregar enviando un carácter específico por serial (ej: 'T') con una pequeña modificación al firmware.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name" style="color:var(--accent2);">Sin conversión a unidades físicas</div>
+        </div>
+        <div class="param-desc">El firmware envía cuentas ADC crudas, no gramos ni Newtons. La conversión debe hacerse en post-procesamiento en Excel o Python con el factor de calibración correspondiente a cada celda.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name" style="color:var(--accent2);">Volumen de datos alto</div>
+        </div>
+        <div class="param-desc">A 800 Hz con 5 columnas de datos, se generan ~800 líneas por segundo. Una sesión de 10 segundos produce ~8000 filas. RealTerm puede capturarlo sin problemas, pero Excel puede ser lento al abrir archivos grandes.</div>
+      </div>
+
+      <div class="param-item">
+        <div>
+          <div class="param-name" style="color:var(--accent2);">HX711 sin tara activa por defecto</div>
+        </div>
+        <div class="param-desc">Las columnas hx1 y hx2 envían valores crudos sin aplicar el offset de tara. Para activarla hay que descomentar las líneas correspondientes en el firmware (líneas 169 y 171 del archivo .ino).</div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  LABSENS · Escuela de Ingeniería Eléctrica · PUCV · 2026 · Guía Técnica Docente v1.0
+</footer>
+
+</body>
+</html>
